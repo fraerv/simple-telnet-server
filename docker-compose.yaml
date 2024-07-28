@@ -1,0 +1,12 @@
+services:
+  telnet:
+    container_name: telnet
+    build: .
+    ports:
+      - 23:23
+    restart: always
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./questions.py
+          target: /app/questions.py
