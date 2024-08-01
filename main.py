@@ -1,7 +1,7 @@
 import asyncio
 import telnetlib3
 
-from questions import questions
+from questions import questions, congrats, secret_information, secret_information_2
 
 
 async def get_answer(reader, writer):
@@ -15,7 +15,7 @@ async def get_answer(reader, writer):
     return answer[:-1]
 
 
-async def shell(reader, writer):
+async def shell_old(reader, writer):
     writer.write('\r\nWell hello there. Do you have a code?\r\nType \'exit\' to close connection\r\n')
     code = ''
     while code != 'exit':
@@ -37,6 +37,22 @@ async def shell(reader, writer):
                 writer.write(f'\r\nHmm, sorry, but that\'s not quite correct :(\r\n The question is: {question}\r\n')
     writer.close()
 
+
+async def shell(reader, writer):
+    writer.write('\r\n')
+    writer.write('HOOORAYYY!\r\n')
+    await asyncio.sleep(2)
+    writer.writelines(congrats)
+    writer.write('\r\n\r\n\r\n')
+    writer.write(secret_information)
+    for _ in range(6):
+        writer.write('.')
+        await asyncio.sleep(1)
+    writer.write('\r\n')
+    writer.write(secret_information_2)
+    writer.write('\r\n')
+    await writer.drain()
+    writer.close()
 
 loop = asyncio.get_event_loop()
 coro = telnetlib3.create_server(port=23, shell=shell)
