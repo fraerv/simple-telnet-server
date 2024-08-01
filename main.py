@@ -51,7 +51,10 @@ async def shell(reader, writer):
     writer.write('\r\n')
     writer.write(secret_information_2)
     writer.write('\r\n')
+    writer.write('\r\n')
+    writer.write('input anything to close connection\r\n')
     await writer.drain()
+    await reader.read(1)
     writer.close()
 
 loop = asyncio.get_event_loop()
